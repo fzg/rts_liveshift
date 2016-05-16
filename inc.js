@@ -14,6 +14,7 @@ function volch() {
 }
 
 function pop() {
+  blam = false;
   plpa = document.getElementById('plpa');
   stst = document.getElementById('stst');
   player= document.getElementById('player');
@@ -26,6 +27,7 @@ function pop() {
   }
   document.getElementById("dt").value = new Date().toISOString().slice(0,19);
   playingHndlr();
+  dt.onchange = function() {blam = false;};
 }
 
 function sameselected() {
@@ -33,9 +35,10 @@ function sameselected() {
 }
 
 function togglestartstop() {
-if (player.paused == true || !sameselected()) {// selected != current -> replace
+if (player.paused == true || !sameselected() || !blam) {// selected != current -> replace
  tuneto(document.getElementById('cs').value, document.getElementById('dt').value);
  plpa.value="\u23F8";
+ blam=true;
  } else {
  player.stop();
  plpa.value="\u23F8";
@@ -46,7 +49,8 @@ function tuneto(chan, time) {
  var url =  "http://"+ feeds[chan][0] + url_prefix + genTimeStamp(time);
  source.src = url;
  player.load();
-  player.play();
+ player.play();
+ blam = true;
 }
 
 function toggleplay() {
